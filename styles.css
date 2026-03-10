@@ -157,6 +157,17 @@ body::after {
     transform: rotate(-1.1deg);
 }
 
+.hero-copy::after {
+    content: "";
+    position: absolute;
+    inset: auto 18px 18px auto;
+    width: 120px;
+    height: 120px;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    opacity: 0.6;
+}
+
 .hero-ribbon {
     display: flex;
     flex-wrap: wrap;
@@ -231,6 +242,29 @@ h1 {
     margin-top: 28px;
 }
 
+.hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.hero-links a {
+    color: rgba(245, 247, 255, 0.76);
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.hero-links a:hover,
+.hero-links a:focus-visible {
+    color: var(--accent);
+    transform: translateX(2px);
+}
+
 .button {
     display: inline-flex;
     align-items: center;
@@ -273,6 +307,14 @@ h1 {
     border-radius: 18px;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
+    transform: translateZ(0);
+    transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.hero-stats li:hover {
+    transform: translate3d(0, -3px, 0) rotate(-1deg);
+    border-color: rgba(124, 247, 201, 0.28);
+    background: rgba(255, 255, 255, 0.06);
 }
 
 .stat-value {
@@ -303,8 +345,27 @@ h1 {
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(135deg, rgba(133, 168, 255, 0.14), transparent 40%),
-        linear-gradient(315deg, rgba(124, 247, 201, 0.12), transparent 42%);
+        linear-gradient(135deg, rgba(133, 168, 255, 0.16), transparent 38%),
+        linear-gradient(315deg, rgba(124, 247, 201, 0.14), transparent 42%),
+        repeating-linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.045) 0,
+            rgba(255, 255, 255, 0.045) 1px,
+            transparent 1px,
+            transparent 28px
+        );
+}
+
+.hero-art::after {
+    content: "";
+    position: absolute;
+    inset: 14% 12% auto auto;
+    width: min(52%, 320px);
+    height: min(52%, 320px);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, rgba(133, 168, 255, 0.28) 0%, rgba(133, 168, 255, 0.12) 36%, transparent 68%);
+    opacity: 0.78;
 }
 
 .hero-panel {
@@ -394,6 +455,40 @@ h1 {
     will-change: transform, opacity;
 }
 
+.hero-art-spark,
+.hero-art-spark::before,
+.hero-art-spark::after {
+    position: absolute;
+    display: block;
+    content: "";
+    pointer-events: none;
+}
+
+.hero-art-spark {
+    inset: auto auto 96px 58px;
+    width: 180px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(124, 247, 201, 0), rgba(124, 247, 201, 0.75), rgba(124, 247, 201, 0));
+    opacity: 0.55;
+    transform: rotate(-12deg);
+}
+
+.hero-art-spark::before {
+    inset: -58px auto auto 26px;
+    width: 120px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255, 143, 107, 0), rgba(255, 143, 107, 0.68), rgba(255, 143, 107, 0));
+    transform: rotate(28deg);
+}
+
+.hero-art-spark::after {
+    inset: 42px auto auto 94px;
+    width: 86px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(133, 168, 255, 0), rgba(133, 168, 255, 0.65), rgba(133, 168, 255, 0));
+    transform: rotate(-32deg);
+}
+
 .hero-sticker {
     position: absolute;
     z-index: 3;
@@ -456,6 +551,27 @@ h1 {
     contain-intrinsic-size: 1px 700px;
 }
 
+.warning-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 24px;
+}
+
+.warning-strip span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0 12px;
+    border: 1px dashed rgba(255, 143, 107, 0.36);
+    background: rgba(255, 143, 107, 0.08);
+    color: rgba(245, 247, 255, 0.84);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
 .section-heading {
     display: flex;
     flex-direction: column;
@@ -505,6 +621,7 @@ h3 {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
 .project-card:first-child {
@@ -525,6 +642,12 @@ h3 {
     background:
         linear-gradient(180deg, rgba(255, 143, 107, 0.12), transparent 55%),
         var(--panel-strong);
+}
+
+.project-card:hover,
+.project-card:focus-within {
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 22px 52px rgba(0, 0, 0, 0.3);
 }
 
 .card-topline {
@@ -595,6 +718,15 @@ h3 {
     background: rgba(124, 247, 201, 0.08);
     color: var(--text);
     font-size: 0.74rem;
+}
+
+.site-header,
+.hero-copy,
+.hero-art,
+.manifesto,
+.projects,
+.signal {
+    isolation: isolate;
 }
 
 .site-footer {
@@ -679,6 +811,10 @@ h3 {
     .site-nav a {
         flex: 1 1 auto;
         text-align: center;
+    }
+
+    .hero-links {
+        gap: 10px 14px;
     }
 
     .hero-copy,

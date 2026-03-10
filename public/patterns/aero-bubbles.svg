@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <rect width="320" height="320" fill="none"/>
+  <g opacity=".72">
+    <g transform="translate(52 58)">
+      <circle r="34" fill="rgba(165,233,255,.18)" stroke="rgba(255,255,255,.55)" stroke-width="2"/>
+      <ellipse cx="-10" cy="-12" rx="12" ry="8" fill="rgba(255,255,255,.45)"/>
+    </g>
+    <g transform="translate(226 84)">
+      <circle r="22" fill="rgba(126,207,255,.16)" stroke="rgba(255,255,255,.5)" stroke-width="2"/>
+      <ellipse cx="-6" cy="-8" rx="8" ry="5" fill="rgba(255,255,255,.4)"/>
+    </g>
+    <g transform="translate(132 168)">
+      <circle r="18" fill="rgba(180,240,255,.12)" stroke="rgba(255,255,255,.45)" stroke-width="2"/>
+      <ellipse cx="-5" cy="-6" rx="7" ry="4" fill="rgba(255,255,255,.38)"/>
+    </g>
+    <g transform="translate(254 218)">
+      <circle r="40" fill="rgba(88,190,255,.12)" stroke="rgba(255,255,255,.42)" stroke-width="2"/>
+      <ellipse cx="-12" cy="-14" rx="13" ry="8" fill="rgba(255,255,255,.34)"/>
+    </g>
+  </g>
+</svg>

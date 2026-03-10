@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectPageShell from "../components/ProjectPageShell.astro";
+---
+
+<BaseLayout
+    title="Grid - REDriver Works"
+    description="Grid is REDriver Works' engine lab: a customized Godot-based core for better workflows, cleaner tooling, and reckless experimentation."
+    bodyClass="project-page"
+>
+    <ProjectPageShell
+        themeClass="project-theme-grid"
+        eyebrow="Engine Lab"
+        title="Grid"
+        intro="A customized engine core for trying ideas before they get flattened into the same old workflow. Built on top of Godot because life is too short to rebuild every wheel from ore."
+        status="Heavy tooling work, workflow cleanup, and general engine tampering. Exactly the kind of trouble it was made for."
+        sideNote="Grid exists so the rest of the studio can stop negotiating with default editor behavior every time an idea gets weird."
+        stats={[
+            { value: "Godot", label: "Base layer" },
+            { value: "Tooling", label: "Main target" },
+            { value: "WIP", label: "Still mutating" },
+        ]}
+        panels={[
+            {
+                kicker: "Why It Exists",
+                title: "Another engine, because the defaults are not sacred.",
+                body: [
+                    "Grid Core is where we test what happens when the editor, tooling, and workflow are shaped around how we actually work instead of how an imaginary average user might work.",
+                    "The point is not to replace Godot out of ego. The point is to take a good foundation and push it toward the kinds of projects REDriver Works actually wants to build."
+                ]
+            },
+            {
+                kicker: "Foundation",
+                title: "Built with respect, not hero-complex nonsense.",
+                body: [
+                    "If you care about what Godot has done for game development, same here. Grid only exists because that engine is worth extending in the first place.",
+                    "This is not a fake from-scratch origin story. It is a practical fork in the road: keep the good parts, fix the rough parts, and test reckless ideas faster."
+                ]
+            },
+            {
+                kicker: "Mission",
+                title: "Practical enough to use. Weird enough to matter.",
+                body: [
+                    "Grid is part playground, part working studio tool, part pressure valve for every time a project needs a different answer than the standard pipeline gives it.",
+                    "Use it, study it, fork it, ignore it, steal good ideas from it. If it helps another developer make something better, good."
+                ]
+            }
+        ]}
+        links={[
+            { href: "https://github.com/FadeCrew/Grid", label: "View on GitHub" },
+            { href: "/", label: "Back to Homepage", variant: "secondary" },
+        ]}
+    />
+</BaseLayout>

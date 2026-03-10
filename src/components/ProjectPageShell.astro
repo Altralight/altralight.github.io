@@ -1,0 +1,80 @@
+---
+interface Stat {
+    value: string;
+    label: string;
+}
+
+interface Panel {
+    kicker: string;
+    title: string;
+    body: string[];
+}
+
+interface LinkItem {
+    href: string;
+    label: string;
+    variant?: "primary" | "secondary";
+}
+
+const {
+    eyebrow,
+    title,
+    intro,
+    themeClass = "",
+    status,
+    stats = [] as Stat[],
+    panels = [] as Panel[],
+    links = [] as LinkItem[],
+    sideNote,
+} = Astro.props;
+---
+
+<div id="top" class={`project-shell ${themeClass}`.trim()}>
+    <header class="project-header">
+        <a class="project-back" href="/">Back to REDriver Works</a>
+        <div class="project-heading">
+            <p class="project-eyebrow">{eyebrow}</p>
+            <h1>{title}</h1>
+            <p class="project-intro">{intro}</p>
+        </div>
+        <div class="project-status">
+            <span class="project-status-label">Current Signal</span>
+            <p>{status}</p>
+        </div>
+    </header>
+
+    <section class="project-hero-band" aria-label="Project overview">
+        <div class="project-hero-glow"></div>
+        <div class="project-stats">
+            {stats.map((stat) => (
+                <article>
+                    <span class="project-stat-value">{stat.value}</span>
+                    <span class="project-stat-label">{stat.label}</span>
+                </article>
+            ))}
+        </div>
+        <div class="project-side-note">
+            <p>{sideNote}</p>
+        </div>
+    </section>
+
+    <section class="project-panels">
+        {panels.map((panel) => (
+            <article class="project-panel-card">
+                <span class="project-panel-kicker">{panel.kicker}</span>
+                <h2>{panel.title}</h2>
+                {panel.body.map((paragraph) => (
+                    <p>{paragraph}</p>
+                ))}
+            </article>
+        ))}
+    </section>
+
+    <section class="project-links" aria-label="Project actions">
+        {links.map((link) => (
+            <a class={`button ${link.variant === "secondary" ? "button-secondary" : "button-primary"}`} href={link.href}>
+                {link.label}
+            </a>
+        ))}
+    </section>
+</div>

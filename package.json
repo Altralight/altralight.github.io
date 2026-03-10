@@ -1,0 +1,29 @@
+{
+  "name": "redriver-works-site",
+  "version": "1.0.0",
+  "description": "REDriver Works website",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FadeCrew/fadecrew.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/FadeCrew/fadecrew.github.io/issues"
+  },
+  "homepage": "https://github.com/FadeCrew/fadecrew.github.io#readme",
+  "dependencies": {
+    "astro": "^5.18.0",
+    "gsap": "^3.14.2",
+    "matter-js": "^0.20.0",
+    "ogl": "^1.0.11",
+    "pixi.js": "^8.17.0"
+  }
+}

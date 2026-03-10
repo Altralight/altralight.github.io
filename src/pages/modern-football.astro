@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectPageShell from "../components/ProjectPageShell.astro";
+---
+
+<BaseLayout
+    title="Modern Football - REDriver Works"
+    description="Modern Football is REDriver Works' tactical football project: reactive, simulation-first, and built without stale genre baggage."
+    bodyClass="project-page"
+>
+    <ProjectPageShell
+        themeClass="project-theme-football"
+        eyebrow="Sports Weirdness"
+        title="Modern Football"
+        intro="A football project built from scratch with no loyalty to stale sports-game habits. Tactical, reactive, and trying very hard not to insult the sport."
+        status="Core systems are still being pushed around. The simulation is getting smarter, and the project keeps getting more ambitious instead of calming down."
+        sideNote="The goal is not just to look like football. The goal is to feel like football decisions actually matter from moment to moment."
+        stats={[
+            { value: "AI", label: "Under pressure" },
+            { value: "Tactics", label: "Core language" },
+            { value: "WIP", label: "No fake launch date" },
+        ]}
+        panels={[
+            {
+                kicker: "Vision",
+                title: "Start fresh and stop inheriting bad sports-game habits.",
+                body: [
+                    "Most football games are polished iterations of old assumptions. Modern Football starts by questioning those assumptions instead of treating them like sacred genre law.",
+                    "That means smarter simulation, cleaner tactical feedback, and gameplay that reacts like a sport with ideas in it, not just a bag of canned animations."
+                ]
+            },
+            {
+                kicker: "Philosophy",
+                title: "Built different, yes, but for actual reasons.",
+                body: [
+                    "What if the AI understood shape, pressure, risk, and timing better? What if player behavior felt less like a script and more like a system under tension?",
+                    "Those are the questions this project keeps circling. If the answer is just another yearly football machine, then the whole exercise was pointless."
+                ]
+            },
+            {
+                kicker: "Status",
+                title: "Still in the lab, because half-baked sports systems are miserable.",
+                body: [
+                    "The work right now is deep in the ugly middle: systems work, experimentation, and constant reshaping whenever the simulation reveals a better idea.",
+                    "When something is worth showing, it will land here first. Until then, the project gets the time it needs."
+                ]
+            }
+        ]}
+        links={[
+            { href: "/", label: "Back to Homepage", variant: "secondary" },
+            { href: "/modern-football/#top", label: "Stay on Signal" },
+        ]}
+    />
+</BaseLayout>

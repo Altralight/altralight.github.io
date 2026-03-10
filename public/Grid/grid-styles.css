@@ -1,0 +1,96 @@
+/* Grid-specific styles */
+
+.breadcrumb {
+    margin-top: 20px;
+}
+
+.breadcrumb a {
+    color: #888;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+    color: #ffffff;
+}
+
+.main-content {
+    margin-top: 40px;
+}
+
+.intro {
+    font-size: 1.2rem;
+    margin-bottom: 50px;
+    padding: 30px;
+    background: #111;
+    border-left: 4px solid #666;
+    border-radius: 8px;
+}
+
+.intro p {
+    font-size: 1.2rem;
+    color: #e0e0e0;
+    margin-bottom: 0;
+}
+
+.why, .respect, .mission {
+    margin-bottom: 50px;
+}
+
+.why h2, .respect h2, .mission h2 {
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.cta {
+    margin-top: 60px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.button {
+    display: inline-block;
+    padding: 14px 28px;
+    background: #ffffff;
+    color: #0a0a0a;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border: 2px solid #ffffff;
+}
+
+.button:hover {
+    background: transparent;
+    color: #ffffff;
+}
+
+.button.secondary {
+    background: transparent;
+    color: #ffffff;
+    border: 2px solid #444;
+}
+
+.button.secondary:hover {
+    border-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .intro {
+        padding: 20px;
+    }
+
+    .intro p {
+        font-size: 1.1rem;
+    }
+
+    .cta {
+        flex-direction: column;
+    }
+
+    .button {
+        text-align: center;
+    }
+}
