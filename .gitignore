@@ -1,3 +1,20 @@
 node_modules/
 .astro/
 dist/
+
+# Local-only proof pages and tracker views.
+src/pages/proofs.astro
+src/pages/proofs-v2.astro
+src/pages/proofs-v3.astro
+src/pages/continuum/proofs.astro
+src/pages/continuum/proofs-v2.astro
+src/pages/continuum/proofs-v3.astro
+src/components/proofTracker.ts
+src/components/proofTrackerDetail.ts
+src/components/ProofTrackerView.astro
+src/components/proofsV2Tracker.ts
+src/components/proofsV2TrackerDetail.ts
+src/components/ProofsV2View.astro
+src/components/proofsV3Tracker.ts
+src/components/proofsV3TrackerDetail.ts
+src/components/ProofsV3View.astro
