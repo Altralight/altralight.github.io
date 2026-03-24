@@ -1,7 +1,7 @@
 {
-  "name": "redriver-works-site",
+  "name": "altralight-site",
   "version": "1.0.0",
-  "description": "REDriver Works website",
+  "description": "Altralight website",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
