@@ -1074,8 +1074,6 @@ html[data-theme="light"] .hero-stage::after {
     opacity: 0.94;
     background: url("/patterns/aero-wave.svg") center bottom/112% 100% no-repeat;
     transform: translate3d(0, 0, 0);
-    animation: waterDriftWide 11s ease-in-out infinite;
-    will-change: transform;
 }
 
 .stygian-card-preview {
@@ -1608,8 +1606,6 @@ html[data-theme="light"] .blog-prose pre.astro-code {
     pointer-events: none;
     z-index: 1;
     transform: translate3d(0, 0, 0);
-    animation: waterDriftWide 8.5s ease-in-out infinite;
-    will-change: transform;
 }
 
 .water-svg {
@@ -1625,13 +1621,11 @@ html[data-theme="light"] .blog-prose pre.astro-code {
 
 .water-wave-back {
     fill: rgba(123, 210, 255, 0.24);
-    animation: waterBackDrift 8s ease-in-out infinite;
     transform-origin: center bottom;
 }
 
 .water-wave-front {
     fill: rgba(196, 240, 255, 0.28);
-    animation: waterFrontDrift 4.8s ease-in-out infinite;
     transform-origin: center bottom;
 }
 
