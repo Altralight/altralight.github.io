@@ -7,7 +7,7 @@ const featuredPosts = [...progressPosts].sort((a, b) => b.date.localeCompare(a.d
 <div class="site-shell">
     <header class="site-header">
         <a class="brand" href="/" aria-label="Altralight home">
-            <img class="brand-mark" src="/brand/altralight-logo.png" alt="" width="500" height="500" />
+            <img class="brand-mark" src="/brand/altralight-logo.png" alt="" width="500" height="500" decoding="async" />
             <span class="brand-wording">
                 <span class="brand-name">Altralight</span>
                 <span class="brand-subtitle">Systems, games, and tools we enjoy building</span>
@@ -69,7 +69,7 @@ const featuredPosts = [...progressPosts].sort((a, b) => b.date.localeCompare(a.d
             <div class="hero-art" data-intro="art">
                 <div class="hero-stage" data-stage>
                     <div class="hero-cover-card" aria-hidden="true">
-                        <img class="hero-cover" src="/brand/altralight-center.png" alt="" width="1000" height="1000" />
+                        <img class="hero-cover" src="/brand/altralight-center.png" alt="" width="1000" height="1000" decoding="async" fetchpriority="high" />
                     </div>
                     <div class="hero-grid"></div>
                     <div class="hero-beam"></div>
@@ -275,32 +275,3 @@ const featuredPosts = [...progressPosts].sort((a, b) => b.date.localeCompare(a.d
         <p>We build Modern Football, Stygian, Field Continuum, Qit, and whatever comes next.</p>
     </footer>
 </div>
-
-<script>
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    const runIntroMotion = async () => {
-        const { gsap } = await import("gsap");
-
-        gsap.from("[data-intro='copy'] > *", {
-            duration: 0.9,
-            y: 36,
-            opacity: 0,
-            ease: "power3.out",
-            stagger: 0.08,
-            clearProps: "transform,opacity",
-        });
-
-        gsap.from("[data-intro='art'] > *", {
-            duration: 1.05,
-            y: 42,
-            opacity: 0,
-            ease: "power3.out",
-            stagger: 0.1,
-            delay: 0.08,
-            clearProps: "transform,opacity",
-        });
-    };
-
-    runIntroMotion();
-</script>
