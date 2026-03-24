@@ -21,8 +21,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
 
-      - name: Install, build, and upload site
-        uses: withastro/action@v5
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Strip private proof routes from deploy artifact
+        run: |
+          rm -rf dist/proofs dist/proofs-v2 dist/proofs-v3
+          rm -rf dist/continuum/proofs dist/continuum/proofs-v2 dist/continuum/proofs-v3
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
 
   deploy:
     needs: build

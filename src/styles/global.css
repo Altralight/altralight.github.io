@@ -78,7 +78,7 @@ html[data-theme="light"] body {
 
 body::after {
     content: "";
-    position: absolute;
+    position: fixed;
     inset: 0;
     pointer-events: none;
     background:
@@ -94,7 +94,7 @@ html[data-theme="light"] body::after {
 
 body::before {
     content: "";
-    position: absolute;
+    position: fixed;
     inset: 0;
     pointer-events: none;
     background-image:
@@ -670,7 +670,6 @@ html[data-theme="light"] .hero-stage {
     height: 100%;
     object-fit: contain;
     object-position: center;
-    filter: drop-shadow(0 28px 32px rgba(0, 0, 0, 0.38));
 }
 
 html[data-theme="light"] .chip-field {
@@ -729,7 +728,6 @@ html[data-theme="light"] .hero-grid {
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(var(--accent-warm-rgb), 0.16) 26%, rgba(var(--accent-rgb), 0.12) 56%, transparent 92%);
     transform: translateX(-50%);
-    filter: blur(1px);
     opacity: 0.2;
 }
 
@@ -869,7 +867,6 @@ html[data-theme="light"] .hero-stage::after {
         inset 0 1px 0 var(--glass-shine),
         inset 0 -1px 0 rgba(var(--accent-rgb), 0.12),
         0 10px 22px rgba(0, 0, 0, 0.24);
-    backdrop-filter: blur(6px);
 }
 
 .hero-panel-main {
@@ -923,8 +920,6 @@ html[data-theme="light"] .hero-stage::after {
     display: flex;
     gap: 28px;
     width: max-content;
-    animation: marquee 18s linear infinite;
-    will-change: transform;
 }
 
 .marquee-track span {
