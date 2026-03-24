@@ -21,6 +21,7 @@ const {
     title,
     intro,
     themeClass = "",
+    heroBandClass = "",
     status,
     stats = [] as Stat[],
     panels = [] as Panel[],
@@ -31,7 +32,7 @@ const {
 
 <div id="top" class={`project-shell ${themeClass}`.trim()}>
     <header class="project-header">
-        <a class="project-back" href="/">Back to REDriver Works</a>
+        <a class="project-back" href="/">Back Home</a>
         <div class="project-heading">
             <p class="project-eyebrow">{eyebrow}</p>
             <h1>{title}</h1>
@@ -43,19 +44,25 @@ const {
         </div>
     </header>
 
-    <section class="project-hero-band" aria-label="Project overview">
+    <section class={`project-hero-band ${heroBandClass}`.trim()} aria-label="Project overview">
         <div class="project-hero-glow"></div>
-        <div class="project-stats">
-            {stats.map((stat) => (
-                <article>
-                    <span class="project-stat-value">{stat.value}</span>
-                    <span class="project-stat-label">{stat.label}</span>
-                </article>
-            ))}
-        </div>
-        <div class="project-side-note">
-            <p>{sideNote}</p>
-        </div>
+        {Astro.slots.has("hero-band") ? (
+            <slot name="hero-band" />
+        ) : (
+            <>
+                <div class="project-stats">
+                    {stats.map((stat) => (
+                        <article>
+                            <span class="project-stat-value">{stat.value}</span>
+                            <span class="project-stat-label">{stat.label}</span>
+                        </article>
+                    ))}
+                </div>
+                <div class="project-side-note">
+                    <p>{sideNote}</p>
+                </div>
+            </>
+        )}
     </section>
 
     <section class="project-panels">

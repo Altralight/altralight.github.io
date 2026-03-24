@@ -1,0 +1,105 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectPageShell from "../components/ProjectPageShell.astro";
+---
+
+<BaseLayout
+    title="Stygian - Altralight"
+    description="Stygian is our GPU-accelerated C23 UI and tool runtime: SDF-first, invalidation-driven, and built for real desktop tools."
+    bodyClass="project-page"
+>
+    <ProjectPageShell
+        themeClass="project-theme-stygian"
+        heroBandClass="project-hero-band-stygian"
+        eyebrow="UI Runtime"
+        title="Stygian"
+        intro="A GPU-accelerated C23 UI and tool runtime for real desktop software and long-lived tooling projects."
+        status="OpenGL and Vulkan paths are live, the widget baseline exists, and the runtime keeps improving step by step."
+        sideNote="This is about more than raw speed. Seb Aaltonen has been a strong influence on the SoA design and the two access points: the operating system access point and the graphics API access point. Casey Muratori has been a strong influence on the data-oriented direction."
+        stats={[
+            { value: "C23", label: "Core language" },
+            { value: "SDF", label: "Rendering model" },
+            { value: "GPU", label: "Resident state" },
+        ]}
+        panels={[
+            {
+                kicker: "What It Is",
+                title: "A practical tool runtime built for day-to-day use.",
+                body: [
+                    "Stygian is a native C23 UI library built around a data-driven immediate (DDI) runtime: classify impact, publish mutations, commit deterministically into GPU-resident SoA buffers, then either render or skip.",
+                    "That structure exists for one reason: static UI should not rebuild and redraw just because input is still flowing through the app."
+                ]
+            },
+            {
+                kicker: "Why It Matters",
+                title: "Single draw call is the headline. The actual win is deeper.",
+                body: [
+                    "Stygian is SDF-first across chrome, shapes, wires, and text. Elements live on the GPU between frames, dirty ranges are tracked explicitly, and clean scopes replay without re-uploading clean data.",
+                    "The result is a runtime built for editors, browsers, node graphs, and actual tools where idle behavior and deterministic updates matter just as much as raw throughput."
+                ]
+            },
+            {
+                kicker: "Current Shape",
+                title: "Already doing the hard parts.",
+                body: [
+                    "OpenGL 4.3 and Vulkan access points are implemented. The codebase already carries dock and tab systems, node graph paths, borderless window chrome, MTSDF text, ICC-aware output handling, and a shipped widget baseline.",
+                    "This is the UI layer we are using for Field Continuum and the rest of our stack as requirements keep growing."
+                ]
+            }
+        ]}
+        links={[
+            { href: "https://github.com/StygianFade/Stygian", label: "View on GitHub" },
+            { href: "/", label: "Back to Homepage", variant: "secondary" },
+        ]}
+    >
+        <Fragment slot="hero-band">
+            <div class="stygian-band">
+                <div class="stygian-preview" aria-hidden="true">
+                    <div class="stygian-console">
+                        <span>[Stygian AP] VSYNC enabled</span>
+                        <span>[Renderer] Intel(R) HD Graphics 4600</span>
+                        <span>[Backend] OpenGL 4.3 detected</span>
+                        <span>[Atlas] MTSDF glyph path warm</span>
+                        <span>[Frame] eval-only skip path ready</span>
+                    </div>
+                    <div class="stygian-window">
+                        <div class="stygian-window-bar">
+                            <span class="stygian-url">https://fieldengine.space/</span>
+                            <div class="stygian-window-actions">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="stygian-window-body">
+                            <div class="stygian-sidebar">
+                                <span>H</span>
+                                <span>B</span>
+                                <span>D</span>
+                                <span>C</span>
+                            </div>
+                            <div class="stygian-canvas"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-stats">
+                    <article>
+                        <span class="project-stat-value">SoA</span>
+                        <span class="project-stat-label">Persistent buffers</span>
+                    </article>
+                    <article>
+                        <span class="project-stat-value">Skip</span>
+                        <span class="project-stat-label">Idle redraw path</span>
+                    </article>
+                    <article>
+                        <span class="project-stat-value">GL/VK</span>
+                        <span class="project-stat-label">Backends live</span>
+                    </article>
+                </div>
+                <div class="project-side-note">
+                    <p>The mockup tone is intentional: dark shell, clear hierarchy, and enough signal to show this is a desktop tooling runtime.</p>
+                </div>
+            </div>
+        </Fragment>
+    </ProjectPageShell>
+</BaseLayout>

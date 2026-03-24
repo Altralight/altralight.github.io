@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectPageShell from "../components/ProjectPageShell.astro";
+---
+
+<BaseLayout
+    title="Field Continuum - Altralight"
+    description="Field Continuum is our simulation track for Modern Football and related long-form systems work."
+    bodyClass="project-page"
+>
+    <ProjectPageShell
+        themeClass="project-theme-continuum"
+        eyebrow="Field Continuum"
+        title="Field Continuum"
+        intro="Field Continuum is where we are shaping the deeper simulation side of Modern Football and future work."
+        status="Field architecture and simulation systems are in active construction. Scaffold and Stygian are already helping guide the direction."
+        sideNote="The goal is simple: keep simulation behavior controllable, deterministic, and pleasant to iterate on over time."
+        stats={[
+            { value: "WIP", label: "Field status" },
+            { value: "Core", label: "For Stygian + Scaffold" },
+            { value: "Deep", label: "Simulation-first" },
+        ]}
+        panels={[
+            {
+                kicker: "Why It Exists",
+                title: "Modern Football needed a deeper base layer.",
+                body: [
+                    "Field Continuum is being built because our simulation goals are bigger than what standard pipelines usually give us.",
+                    "We wanted a place where behavior, iteration speed, and long-term maintainability can all improve together."
+                ]
+            },
+            {
+                kicker: "Role",
+                title: "A simulation layer, not just rendering tech.",
+                body: [
+                    "Field Continuum is intended to host real simulation logic and provide an environment where tactical behavior, world state, and tool workflow stay aligned.",
+                    "It sits with Stygian for tooling and Scaffold for language-level control, so the full stack can move together."
+                ]
+            },
+            {
+                kicker: "Trajectory",
+                title: "Built in public, shaped by real work.",
+                body: [
+                    "This is still in active development, and the architecture changes as the work teaches us new things.",
+                    "As it matures, this page tracks what changed and why."
+                ]
+            }
+        ]}
+        links={[
+            { href: "/", label: "Back to Homepage", variant: "secondary" },
+            { href: "/blog/", label: "Read progress posts" },
+        ]}
+    />
+</BaseLayout>

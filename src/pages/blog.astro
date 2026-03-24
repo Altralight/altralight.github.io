@@ -1,0 +1,141 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { progressPosts } from "../data/progressPosts";
+import { taskBoard } from "../data/kanbanBoard";
+
+const posts = [...progressPosts].sort((a, b) => b.date.localeCompare(a.date));
+const initialTaskBoard = JSON.stringify(taskBoard);
+---
+
+<BaseLayout
+    title="Progress Blog - Altralight"
+    description="Progress posts from us covering Modern Football, Stygian, Field Continuum, Qit, and the tools around them."
+    bodyClass="project-page"
+>
+    <div class="project-shell">
+        <header class="project-header">
+            <a class="project-back" href="/">Back Home</a>
+            <div class="project-heading">
+                <p class="project-eyebrow">Progress Blog</p>
+                <h1>Build logs, notes, and milestones.</h1>
+                <p class="project-intro">
+                    This is where we post ongoing progress for the work. Short updates, real milestones, and the
+                    work as it actually is.
+                </p>
+            </div>
+            <div class="project-status">
+                <span class="project-status-label">Update Mode</span>
+                <p>Manual posts and browser-local task toggles. Cheap, honest, and enough for a static site.</p>
+            </div>
+        </header>
+
+        <section class="project-panels blog-grid">
+            {posts.map((post) => (
+                <article class="project-panel-card blog-post-card">
+                    <span class="project-panel-kicker">{post.date}</span>
+                    <h2>{post.title}</h2>
+                    <p>{post.summary}</p>
+                    <a class="card-link" href={post.href}>Read post</a>
+                </article>
+            ))}
+        </section>
+
+        <section class="project-panel-card taskboard-panel">
+            <div class="taskboard-heading">
+                <div>
+                    <p class="project-panel-kicker">Studio Board</p>
+                    <h2>Public taskboard. Real movement.</h2>
+                </div>
+                <div class="taskboard-meta">
+                    <p class="taskboard-note">This is browser-local. Tick something off here after it lands and your browser will remember.</p>
+                    <button class="taskboard-reset" type="button" data-taskboard-reset>Reset local ticks</button>
+                </div>
+            </div>
+            <div class="taskboard-grid" data-taskboard data-initial-board={initialTaskBoard}></div>
+        </section>
+    </div>
+</BaseLayout>
+
+<script is:inline define:vars={{ initialTaskBoard }}>
+    const taskboardRoot = document.querySelector("[data-taskboard]");
+    const resetButton = document.querySelector("[data-taskboard-reset]");
+    const storageKey = "altralight-taskboard-state";
+
+    if (taskboardRoot) {
+        const defaultBoard = JSON.parse(initialTaskBoard);
+
+        const loadState = () => {
+            try {
+                const raw = window.localStorage.getItem(storageKey);
+                return raw ? JSON.parse(raw) : {};
+            } catch {
+                return {};
+            }
+        };
+
+        let taskState = loadState();
+
+        const saveState = () => {
+            window.localStorage.setItem(storageKey, JSON.stringify(taskState));
+        };
+
+        const escapeHtml = (value) =>
+            value
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;");
+
+        const renderTaskboard = () => {
+            taskboardRoot.innerHTML = defaultBoard
+                .map((lane) => {
+                    const total = lane.items.length;
+                    const doneCount = lane.items.filter((item) => taskState[item.id] ?? item.done).length;
+
+                    return `
+                        <section class="tasklane">
+                            <header class="tasklane-header">
+                                <div>
+                                    <p class="tasklane-kicker">${escapeHtml(lane.title)}</p>
+                                    <p class="tasklane-note">${escapeHtml(lane.note)}</p>
+                                </div>
+                                <span class="tasklane-count">${doneCount}/${total}</span>
+                            </header>
+                            <div class="tasklane-items">
+                                ${lane.items
+                                    .map((item) => {
+                                        const checked = taskState[item.id] ?? item.done;
+                                        return `
+                                            <label class="taskitem ${checked ? "is-done" : ""}">
+                                                <input type="checkbox" data-task-id="${item.id}" ${checked ? "checked" : ""} />
+                                                <span>${escapeHtml(item.title)}</span>
+                                            </label>
+                                        `;
+                                    })
+                                    .join("")}
+                            </div>
+                        </section>
+                    `;
+                })
+                .join("");
+        };
+
+        taskboardRoot.addEventListener("change", (event) => {
+            const target = event.target;
+            if (!(target instanceof HTMLInputElement)) return;
+            if (!target.dataset.taskId) return;
+
+            taskState[target.dataset.taskId] = target.checked;
+            saveState();
+            renderTaskboard();
+        });
+
+        resetButton?.addEventListener("click", () => {
+            taskState = {};
+            window.localStorage.removeItem(storageKey);
+            renderTaskboard();
+        });
+
+        renderTaskboard();
+    }
+</script>

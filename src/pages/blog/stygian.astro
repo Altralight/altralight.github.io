@@ -1,0 +1,383 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { Code } from "astro:components";
+
+const quickWindowCode = `#include "stygian.h"
+#include "stygian_window.h"
+
+#ifdef STYGIAN_DEMO_VULKAN
+#define STYGIAN_QUICK_BACKEND STYGIAN_BACKEND_VULKAN
+#define STYGIAN_QUICK_WINDOW_RENDER_FLAG STYGIAN_WINDOW_VULKAN
+#else
+#define STYGIAN_QUICK_BACKEND STYGIAN_BACKEND_OPENGL
+#define STYGIAN_QUICK_WINDOW_RENDER_FLAG STYGIAN_WINDOW_OPENGL
+#endif
+
+int main(void) {
+    StygianWindowConfig win_cfg = {
+        .width = 1280,
+        .height = 720,
+        .title = "Stygian Quick Window",
+        .flags = STYGIAN_WINDOW_RESIZABLE | STYGIAN_QUICK_WINDOW_RENDER_FLAG,
+    };
+    StygianWindow *window = stygian_window_create(&win_cfg);
+    if (!window) return 1;
+
+    StygianConfig cfg = {
+        .backend = STYGIAN_QUICK_BACKEND,
+        .window = window,
+    };
+    StygianContext *ctx = stygian_create(&cfg);
+    if (!ctx) {
+        stygian_window_destroy(window);
+        return 1;
+    }
+
+    StygianFont font = stygian_font_load(ctx, "assets/atlas.png", "assets/atlas.json");
+    while (!stygian_window_should_close(window)) {
+        StygianEvent event;
+        while (stygian_window_poll_event(window, &event)) {
+            if (event.type == STYGIAN_EVENT_CLOSE) stygian_window_request_close(window);
+        }
+
+        int width, height;
+        stygian_window_get_size(window, &width, &height);
+        stygian_begin_frame(ctx, width, height);
+        stygian_rect(ctx, 10, 10, 200, 100, 0.2f, 0.3f, 0.8f, 1.0f);
+        if (font) stygian_text(ctx, font, "Hello", 20, 50, 16.0f, 1, 1, 1, 1);
+        stygian_end_frame(ctx);
+    }
+
+    if (font) stygian_font_destroy(ctx, font);
+    stygian_destroy(ctx);
+    stygian_window_destroy(window);
+    return 0;
+}`;
+
+const frameIntentCode = `static void frame_tick(StygianContext *ctx, int width, int height, bool force_eval_only) {
+    // Render-capable frame by default.
+    StygianFrameIntent intent = STYGIAN_FRAME_RENDER;
+
+    // Keep logic responsive without waking the GPU when no repaint is needed.
+    if (force_eval_only) {
+        intent = STYGIAN_FRAME_EVAL_ONLY;
+    }
+
+    stygian_begin_frame_intent(ctx, width, height, intent);
+
+    // Usual widget/UI work here.
+    // Scope replay + invalidation tracking still runs in eval-only mode.
+
+    stygian_end_frame(ctx);
+}`;
+---
+
+<BaseLayout
+    title="Stygian: why we built a data-oriented UI runtime in C23 - Altralight"
+    description="A long-form Stygian story covering the runtime model, SoA layout, commit pipeline, benchmark lanes, backend access points, and core influences."
+    bodyClass="project-page"
+>
+    <article class="project-shell blog-article">
+        <header class="project-heading blog-post-hero">
+            <p class="project-eyebrow">Progress Blog / Stygian</p>
+            <h1>Stygian is what happened when we stopped accepting mystery frame costs.</h1>
+            <p class="project-intro">
+                This is the long version: why we built it, how data-oriented decisions shape it, how the frame pipeline works, and what "single draw call"
+                actually means once the hype smoke clears.
+            </p>
+            <div class="project-strip">
+                <span>GPU-native UI runtime</span>
+                <span>SoA + deterministic commit</span>
+                <span>Eval-only and replay paths</span>
+                <span>OS and graphics API access points</span>
+            </div>
+        </header>
+
+        <section class="project-panels blog-meta-grid">
+            <article class="project-panel-card">
+                <span class="project-panel-kicker">Posted</span>
+                <p>March 11, 2026</p>
+            </article>
+            <article class="project-panel-card">
+                <span class="project-panel-kicker">Scope</span>
+                <p>Architecture, integration, and performance philosophy from <code>README.md</code> and <code>docs/</code>.</p>
+            </article>
+            <article class="project-panel-card">
+                <span class="project-panel-kicker">Tone</span>
+                <p>Builder notes from the workshop floor: practical, mildly opinionated, and occasionally caffeinated. :)</p>
+            </article>
+        </section>
+
+        <section class="project-panel-card blog-prose">
+            <h2>Before anything else: what DDI means</h2>
+            <p>
+                We keep saying <code>DDI</code>, so here it is plainly: <strong>data-driven immediate</strong>. Immediate in interaction style, data-driven in
+                storage and commit behavior. In human terms: you can work in a direct, responsive way without paying a mystery tax every frame.
+            </p>
+            <p>
+                A lot of UI conversations get weird because two very different concerns get fused together: "How does it feel to author?" and
+                "How does it behave under load?" DDI is our way to split those concerns cleanly and still let them cooperate.
+            </p>
+            <p>
+                If the acronym looked suspiciously convenient before, fair. Acronyms usually do. This one earns its keep in the runtime.
+            </p>
+
+            <h2>Why we built this in the first place</h2>
+            <p>
+                Stygian exists because we wanted a runtime that is friendly when you're building and disciplined when it's running. Most options force a
+                trade: ergonomic authoring but noisy frame behavior, or stable frame behavior with a rigid workflow that makes experimentation feel like tax season.
+            </p>
+            <p>
+                We wanted something more balanced. We wanted UI tools that can move fast while still giving us frame-level accountability. We wanted deterministic
+                behavior when teams get larger, projects get messier, and requirements keep changing three meetings after everyone nodded "yes."
+            </p>
+            <p>
+                Also, this is personal taste, but we like systems that tell the truth. If something is expensive, say it. If nothing changed, do less. If a frame
+                rendered, we should be able to explain why without starting a ghost story.
+            </p>
+
+            <h2>The runtime model in plain English</h2>
+            <p>
+                The architecture docs describe the frame pipeline as <code>Collect -> Commit -> Evaluate -> Render/Skip</code>. That's exactly what it is. We collect
+                input/events, commit deterministic mutations, evaluate state/scope logic, and then decide if rendering is needed.
+            </p>
+            <p>
+                The important part is the final branch. "Render" and "Skip" are both legitimate outcomes. Skip is not a bug, not a fallback, and not an accidental
+                optimization. Skip is a feature. If the UI is clean, we keep it clean and move on.
+            </p>
+            <p>
+                That sounds obvious. It is not common in practice.
+            </p>
+
+            <h2>What the DDI contract actually enforces</h2>
+            <p>
+                The DDI contract says repaint happens for four reasons only: mutation, timer/animation, async completion, or explicit force. If none of those happened,
+                we should not submit a render just because the mouse moved around like it drank three coffees.
+            </p>
+            <p>
+                Pointer movement can still trigger eval-only work for focus/active transitions. That's the key distinction: logic can stay responsive without dragging
+                the GPU into a full render cycle for no reason.
+            </p>
+            <p>
+                This contract is not glamorous, but it removes a lot of accidental behavior drift. When teams grow, contracts beat vibes.
+            </p>
+
+            <Code code={frameIntentCode} lang="c" theme="github-dark" />
+
+            <p>
+                That snippet is intentionally short. It also captures a big design philosophy: if we can meet UX requirements in eval-only mode, we should.
+                GPU work is not a personality trait.
+            </p>
+
+            <h2>SoA and data-oriented behavior: the boring foundation that does the heavy lifting</h2>
+            <p>
+                Stygian's core data layout uses a three-buffer SoA split: hot state, appearance, effects. We didn't do this because "SoA" sounds cool on
+                a whiteboard. We did it because predictable memory access and predictable upload ranges matter when you're running large scenes continuously.
+            </p>
+            <p>
+                The hot path should stay hot. Appearance and effects should exist without polluting every iteration. The docs on
+                <code>data_layout_soa.md</code> and <code>runtime_model.md</code> are blunt about this.
+            </p>
+            <p>
+                Casey Muratori's data-oriented framing has had real influence here: clear ownership, explicit layout intent, and zero patience for hidden object
+                graphs pretending to be architecture.
+            </p>
+
+            <h2>Chunk versioning and dirty ranges</h2>
+            <p>
+                Each SoA chunk tracks versions and dirty ranges. Backend compares CPU chunk versions against GPU versions and uploads only what changed.
+                Not "what maybe changed." What changed.
+            </p>
+            <p>
+                This is why static warm scenes can sit at zero upload. It is also why sparse dirty updates behave differently from full-hot mutation storms.
+                The runtime has enough information to treat those two cases differently, which is exactly what we want.
+            </p>
+            <p>
+                If everything uploads every frame, we learn almost nothing from our data model. So we made sure that's not the default story.
+            </p>
+
+            <h2>Deterministic commit, and why we care so much</h2>
+            <p>
+                Stygian supports multi-producer command generation with single-thread commit. Producers emit command buffers. Commit thread is the sole SoA writer.
+                That boundary is not negotiable in the current model, because it keeps mutation ownership crisp.
+            </p>
+            <p>
+                Merge order is deterministic: scope, element, property, priority, submit sequence, command index. Conflict policy is deterministic last-write-wins
+                per property.
+            </p>
+            <p>
+                This sounds strict until you've spent a week debugging a non-deterministic UI race in a "flexible" runtime. Then it sounds like mercy.
+            </p>
+
+            <h2>Observability: we want postmortems, not superstition</h2>
+            <p>
+                The docs push hard on observability: reason flags, source tags, scope provenance, winner ring metadata, error rings. We want frames to be attributable.
+                We want dropped queue behavior to be visible. We want commit issues to show up in diagnostics instead of folklore.
+            </p>
+            <p>
+                If your runtime can go wrong in ten ways, and can only explain one of them, you're paying interest later.
+            </p>
+            <p>
+                Stygian is still improving here, but the direction is clear: if it happens, we should be able to ask "why?" and get a real answer.
+            </p>
+
+            <h2>Two access points: the shape we keep coming back to</h2>
+            <p>
+                We keep architecture boundaries explicit through two access points:
+            </p>
+            <p>
+                1. <strong>Operating system access point</strong>: windowing, input routing, monitor/ICC behavior, titlebar/fullscreen policy, platform integration.
+            </p>
+            <p>
+                2. <strong>Graphics API access point</strong>: OpenGL/Vulkan backend behavior, submit semantics, frame pacing, upload strategy, and render execution details.
+            </p>
+            <p>
+                Seb Aaltonen's practical performance thinking has been a major influence on this shape, especially around SoA behavior and avoiding blurry ownership
+                between platform and graphics layers.
+            </p>
+            <p>
+                When those boundaries stay clear, the runtime is easier to reason about, easier to profile, and easier to evolve without random breakage.
+            </p>
+
+            <h2>SDF-first across the stack</h2>
+            <p>
+                We are SDF-first for chrome, shapes, wires, and text. That choice lets us keep one rendering language across multiple UI surfaces instead of juggling
+                unrelated paths that each come with their own corner-case museum.
+            </p>
+            <p>
+                Text uses MTSDF and the Triad pipeline, with compression policy choices for iGPU/dGPU realities. This matters because text is where many demo runtimes
+                start looking "fine" and production tools start looking expensive.
+            </p>
+            <p>
+                We do not treat text as a decorative afterthought. In real tools, text is basically a primary workload.
+            </p>
+
+            <h2>Color management and platform details that are not optional in real apps</h2>
+            <p>
+                ICC-aware output handling on Win32 is already part of the story. Monitor moves can trigger profile rebinding, and manual/auto color behavior is controlled
+                through explicit API surfaces.
+            </p>
+            <p>
+                This is exactly the kind of thing that gets skipped in "cool runtime reveal" posts and then quietly hurts users later. We would rather handle the boring
+                correctness work now than pretend it is someone else's problem.
+            </p>
+            <p>
+                It's not flashy, but it makes the runtime feel trustworthy on real desktops.
+            </p>
+
+            <h2>Benchmarks: what we measure, what we refuse to fake</h2>
+            <p>
+                The performance docs are clear that there are multiple lanes, and mixing them into one scoreboard is noise. The Stygian native lane answers one question.
+                CPU-builder comparisons answer another.
+            </p>
+            <p>
+                On older hardware (HD 4600), static replay can reach zero upload after warmup, sparse dirty cases scale better than full-hot cases, and heavy scenes
+                expose real costs without hand-wavy excuses.
+            </p>
+            <p>
+                We like this approach because it is honest. If a lane is favorable, say why. If a lane is not favorable, say why. Engineering gets better when numbers
+                are contextualized instead of weaponized.
+            </p>
+
+            <h2>Quick start remains boring on purpose (which is good)</h2>
+            <p>
+                For all the architecture talk, we still want a smooth first run. The quick window sample from the docs does that. Build, open window, draw a shape, draw
+                text, keep moving.
+            </p>
+            <p>
+                Once that runs, do not sprint into feature chaos. First validate backend alignment rules, frame intent behavior, and event pacing. Half of "runtime bugs"
+                are really "we skipped the boring setup checks" bugs.
+            </p>
+
+            <Code code={quickWindowCode} lang="c" theme="github-dark" />
+
+            <p>
+                That sample is short for a reason. It gives you a stable foothold. You can go wild after your foothold is real.
+            </p>
+
+            <h2>How this connects to Field Continuum and the editor track</h2>
+            <p>
+                Stygian, Field Continuum, and the Editor are separate tracks, but they are not isolated islands. Stygian covers UI/tool runtime behavior. Field Continuum
+                pushes deeper simulation systems. Editor focuses visual authoring flow.
+            </p>
+            <p>
+                The shared thread is system clarity: explicit ownership, predictable behavior, and tools that stay pleasant as complexity increases.
+            </p>
+            <p>
+                Inigo Quilez's field/signal thinking has influenced how we reason about continuity and control in the broader stack, even when each track has different
+                implementation goals.
+            </p>
+
+            <h2>What we are not trying to do</h2>
+            <p>
+                We are not trying to "win" every benchmark lane with one number and call it a day.
+            </p>
+            <p>
+                We are not trying to become a shape-shifting framework that does everything for everyone and feels random to maintainers.
+            </p>
+            <p>
+                We are not trying to hide tradeoffs. Every runtime has tradeoffs. The goal is to make ours explicit and intentional.
+            </p>
+
+            <h2>What we are trying to do</h2>
+            <p>
+                Build a runtime that feels fast when active, calm when idle, and explainable under stress.
+            </p>
+            <p>
+                Build tooling primitives that survive long projects and team handoffs.
+            </p>
+            <p>
+                Build architecture docs that are honest enough to help future us, not just current us.
+            </p>
+
+            <h2>A few practical lessons so far</h2>
+            <p>
+                1. "Single draw call" is a useful headline, but the bigger win is often dirty-range discipline and replay correctness.
+            </p>
+            <p>
+                2. If contracts are vague, performance regressions become social debates instead of engineering decisions.
+            </p>
+            <p>
+                3. Data layout decisions you postpone in week one will revisit you in month eight with interest.
+            </p>
+            <p>
+                4. The fastest way to lose confidence in a runtime is to make frame causes opaque.
+            </p>
+            <p>
+                5. If setup scripts are painful, teams stop verifying assumptions and start trusting luck.
+            </p>
+
+            <h2>For builders who are still learning syntax (and still shipping anyway)</h2>
+            <p>
+                You do not need to memorize every API line to contribute meaningfully to systems like this. If you can reason about behavior, ask good questions,
+                and keep digging, you are already doing real engineering work.
+            </p>
+            <p>
+                Syntax gets easier with repetition. System intuition takes longer and matters more.
+            </p>
+            <p>
+                So if you read this and think "I like this, but I am not elite enough yet," you are exactly in the right place.
+            </p>
+
+            <h2>Where we go next</h2>
+            <p>
+                The next stage is less about inventing slogans and more about tightening the loop: better docs, better examples, better profiling habits, and better
+                editor/runtime handoff stories.
+            </p>
+            <p>
+                We will keep publishing progress in public, including ugly parts, because polished myths are useless when you're trying to build real tools.
+            </p>
+            <p>
+                If something gets better, we will say what changed. If something breaks, we will say that too. That's the deal.
+            </p>
+
+            <h2>Closing note</h2>
+            <p>Stygian is still growing, and that is the fun part!</p>
+        </section>
+
+        <div class="project-links blog-post-links">
+            <a class="button button-primary" href="/stygian/">Open Stygian page</a>
+            <a class="button button-secondary" href="/blog/">Back to blog index</a>
+        </div>
+    </article>
+</BaseLayout>

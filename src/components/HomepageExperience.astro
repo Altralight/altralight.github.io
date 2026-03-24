@@ -1,16 +1,22 @@
+---
+import { progressPosts } from "../data/progressPosts";
+
+const featuredPosts = [...progressPosts].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
+---
+
 <div class="site-shell">
     <header class="site-header">
-        <a class="brand" href="/" aria-label="REDriver Works home">
-            <img class="brand-mark" src="/brand/redriverlogo.png" alt="" width="400" height="400" />
+        <a class="brand" href="/" aria-label="Altralight home">
+            <img class="brand-mark" src="/brand/altralight-logo.png" alt="" width="500" height="500" />
             <span class="brand-wording">
-                <span class="brand-name">REDriver Works</span>
-                <span class="brand-subtitle">Systems, games, and tools with teeth</span>
+                <span class="brand-name">Altralight</span>
+                <span class="brand-subtitle">Systems, games, and tools we enjoy building</span>
             </span>
         </a>
         <nav class="site-nav" aria-label="Primary">
             <a href="#projects">Projects</a>
-            <a href="#stack">Stack</a>
-            <a href="#signal-yard">Signal Yard</a>
+            <a href="#work">Work</a>
+            <a href="/blog/">Blog</a>
         </nav>
     </header>
 
@@ -18,53 +24,52 @@
         <section class="hero" id="top">
             <div class="hero-copy" data-intro="copy">
                 <div class="hero-ribbon">
-                    <span>Astro shell online</span>
-                    <span>Signal path unstable</span>
+                    <span>Work signal online</span>
+                    <span>Progress tracked in public</span>
                 </div>
                 <div class="hero-status-band" aria-label="Visual cues">
                     <span class="status-chip"><span class="chip-orb chip-orb-aqua"></span>Glass</span>
                     <span class="status-chip"><span class="chip-orb chip-orb-sky"></span>Waterline</span>
                     <span class="status-chip"><span class="chip-orb chip-orb-mint"></span>Air</span>
                 </div>
-                <p class="eyebrow">Busy as usual.</p>
-                <h1>We build sharp, strange things for people who are tired of boring software.</h1>
+                <p class="eyebrow">Building in public, as usual.</p>
+                <h1>We build games, tools, and experiments we wish already existed.</h1>
                 <p class="hero-text">
-                    REDriver Works is running on a lean Astro shell now, with the heavier visual stack kept on standby for the moments
-                    that actually earn the weight. Fast first, weird second, no fake-app baggage in the middle.
+                    We are building Modern Football, Stygian, Field Continuum, and Qit. Some of it is game work, some of it is research, and all of it
+                    is active right now.
                 </p>
                 <div class="hero-actions">
                     <a class="button button-primary" href="#projects">See the work</a>
-                    <a class="button button-secondary" href="/modern-football/">Modern Football</a>
+                    <a class="button button-secondary" href="/blog/">Read progress posts</a>
                 </div>
                 <div class="hero-links" aria-label="Studio links">
-                    <a href="/grid/">Grid lab</a>
+                    <a href="/stygian/">Stygian runtime</a>
+                    <a href="/continuum/">Field Continuum</a>
+                    <a href="/qit/">Qit VCS</a>
                     <a href="/modern-football/">Football build</a>
-                    <a href="#signal-yard">Signal pool</a>
+                    <a href="/blog/">Progress blog</a>
                 </div>
                 <div class="hero-console" aria-label="Studio notes">
                     <article>
                         <span class="console-label">THIS WEEK</span>
-                        <p>Dragging the old shell into its REDriver Works era without making the homepage slower or dumber.</p>
+                        <p>Less marketing voice, more field notes. Better rhythm, clearer updates.</p>
                     </article>
                     <article>
-                        <span class="console-label">WHY IT WORKS</span>
-                        <p>The new mark does half the job by itself. The rest is just using the cover art without drowning the page in it.</p>
+                        <span class="console-label">WHAT TO WATCH</span>
+                        <p>All four tracks are moving. We post updates as they happen.</p>
                     </article>
                 </div>
                 <ul class="hero-stats" aria-label="Studio highlights">
-                    <li><span class="stat-value">01</span><span class="stat-label">New studio name</span></li>
-                    <li><span class="stat-value">02</span><span class="stat-label">Brand assets live</span></li>
-                    <li><span class="stat-value">0%</span><span class="stat-label">Corporate energy</span></li>
+                    <li><span class="stat-value">04</span><span class="stat-label">Active tracks</span></li>
+                    <li><span class="stat-value">{progressPosts.length}</span><span class="stat-label">Progress posts</span></li>
+                    <li><span class="stat-value">100%</span><span class="stat-label">Built in public</span></li>
                 </ul>
             </div>
 
             <div class="hero-art" data-intro="art">
                 <div class="hero-stage" data-stage>
                     <div class="hero-cover-card" aria-hidden="true">
-                        <img class="hero-cover" src="/brand/redrivercover.jpg" alt="" width="1500" height="500" />
-                    </div>
-                    <div class="hero-logo-badge" aria-hidden="true">
-                        <img src="/brand/redriverlogo.png" alt="" width="400" height="400" />
+                        <img class="hero-cover" src="/brand/altralight-center.png" alt="" width="1000" height="1000" />
                     </div>
                     <div class="hero-grid"></div>
                     <div class="hero-beam"></div>
@@ -73,74 +78,65 @@
                     <div class="aero-bubble bubble-three"></div>
                     <div class="aero-wave"></div>
                     <div class="hero-dock" aria-hidden="true">
-                        <span class="dock-pill"><span class="dock-core"></span>Liquid UI</span>
-                        <span class="dock-pill"><span class="dock-core"></span>Bright Air</span>
-                        <span class="dock-pill"><span class="dock-core"></span>Signal Pool</span>
+                        <span class="dock-pill"><span class="dock-core"></span>New notes land in the blog</span>
                     </div>
                 </div>
 
                 <div class="hero-panel hero-panel-main">
-                    <span class="panel-label">REDRIVER / SIGNAL</span>
-                    <p>Fast surfaces. Loud visuals. Actual intent.</p>
+                    <span class="panel-label">ALTRALIGHT / SIGNAL</span>
+                    <p>Make useful things. Keep them fast. Tell the truth.</p>
                 </div>
                 <div class="hero-panel hero-panel-side">
                     <span class="panel-label">CURRENT MODE</span>
-                    <p>REDriver Works is finally on the page instead of hiding behind the old studio name.</p>
+                    <p>If it changed, it goes in the blog. If it broke, that goes in too.</p>
                 </div>
-                <div class="hero-orbit hero-orbit-left">
-                    <span class="orbit-index">GRID</span>
-                    <p>Engine lab for trying the reckless ideas first.</p>
-                </div>
-                <div class="hero-orbit hero-orbit-right">
-                    <span class="orbit-index">MODERN FOOTBALL</span>
-                    <p>Sports systems with less canned nonsense and more actual thought.</p>
-                </div>
-                <div class="hero-sticker hero-sticker-top">No dead pages</div>
-                <div class="hero-sticker hero-sticker-bottom">Transmission unstable</div>
+                <div class="hero-sticker hero-sticker-top">Still moving, still public</div>
             </div>
         </section>
 
         <section class="marquee" aria-label="Studio themes">
             <div class="marquee-track">
-                <span>REDriver Works</span>
+                <span>Altralight</span>
                 <span>Game tools</span>
                 <span>Sports weirdness</span>
-                <span>Cheap particles</span>
-                <span>Shader signal</span>
-                <span>Physics yard</span>
-                <span>REDriver Works</span>
+                <span>Field Continuum</span>
+                <span>Qit VCS</span>
+                <span>Stygian runtime</span>
+                <span>Progress posts</span>
+                <span>Altralight</span>
                 <span>Game tools</span>
                 <span>Sports weirdness</span>
-                <span>Cheap particles</span>
-                <span>Shader signal</span>
-                <span>Physics yard</span>
+                <span>Field Continuum</span>
+                <span>Qit VCS</span>
+                <span>Stygian runtime</span>
+                <span>Progress posts</span>
             </div>
         </section>
 
-        <section class="manifesto panel" id="stack">
+        <section class="manifesto panel" id="work">
             <div class="section-heading">
-                <p class="section-kicker">Stack</p>
-                <h2>All five pieces finally have a lane.</h2>
+                <p class="section-kicker">Work Direction</p>
+                <h2>Builds, research, and experiments all share one workshop.</h2>
             </div>
             <div class="warning-strip">
-                <span>Astro</span>
-                <span>OGL</span>
-                <span>PixiJS</span>
-                <span>Matter.js</span>
-                <span>GSAP</span>
+                <span>Modern Football in active build</span>
+                <span>Stygian for UI and tools</span>
+                <span>Field Continuum in progress</span>
+                <span>Qit for version control research</span>
+                <span>Progress logged publicly</span>
             </div>
             <div class="manifesto-grid">
                 <article>
-                    <h3>Astro holds the shell</h3>
-                    <p>Static by default, no fake app overhead, and still organized enough that the homepage can get weird without turning into a landfill.</p>
+                    <h3>Modern Football is the game we are pushing hardest</h3>
+                    <p>The rest of the stack supports that game while still being useful for future projects.</p>
                 </article>
                 <article>
-                    <h3>OGL stays on tap</h3>
-                    <p>The GPU-heavy stuff is still in the toolbox, but it only comes out when a section actually deserves the cost.</p>
+                    <h3>Core systems have names and pages</h3>
+                    <p>Stygian, Field Continuum, and Qit are active tracks with their own direction and notes.</p>
                 </article>
                 <article>
-                    <h3>Pixi and Matter stay selective</h3>
-                    <p>Cheap particles and physics are still part of the plan. They just do not get to turn the homepage into a benchmark anymore.</p>
+                    <h3>Blog updates keep it honest</h3>
+                    <p>Progress posts cover what changed, what worked, and what still needs more thought.</p>
                 </article>
             </div>
         </section>
@@ -151,14 +147,41 @@
                 <h2>The current lineup.</h2>
             </div>
             <div class="project-grid">
+                <article class="project-card project-stygian-card">
+                    <div class="stygian-card-preview" aria-hidden="true">
+                        <div class="stygian-card-bar">
+                            <span class="stygian-card-url">fieldengine.space</span>
+                        </div>
+                        <div class="stygian-card-shell">
+                            <div class="stygian-card-rail">
+                                <span>H</span>
+                                <span>B</span>
+                                <span>D</span>
+                            </div>
+                            <div class="stygian-card-surface"></div>
+                        </div>
+                    </div>
+                    <div class="card-topline">
+                        <span class="card-tag">Core Runtime</span>
+                        <span class="card-index">01</span>
+                    </div>
+                    <h3>Stygian</h3>
+                    <p>A GPU-accelerated C23 UI and tooling runtime focused on responsive desktop apps and steady frame behavior.</p>
+                    <ul class="card-specs" aria-label="Stygian highlights">
+                        <li>SDF-first rendering</li>
+                        <li>Deterministic commit</li>
+                        <li>Idle frame skip path</li>
+                    </ul>
+                    <a class="card-link" href="/stygian/">Open Stygian</a>
+                </article>
                 <article class="project-card project-grid-card">
                     <div class="card-orb card-orb-grid" aria-hidden="true"></div>
                     <div class="card-topline">
-                        <span class="card-tag">Engine Lab</span>
-                        <span class="card-index">01</span>
+                        <span class="card-tag">Community Lab</span>
+                        <span class="card-index">02</span>
                     </div>
                     <h3>Grid</h3>
-                    <p>A customized engine playground built on Godot. It exists so we can stop pretending default workflows are good enough for every idea.</p>
+                    <p>A customized engine playground built on Godot for workflow testing, tooling ideas, and practical experiments.</p>
                     <ul class="card-specs" aria-label="Grid highlights">
                         <li>Godot-based core</li>
                         <li>Tooling experiments</li>
@@ -166,15 +189,45 @@
                     </ul>
                     <a class="card-link" href="/grid/">Open Grid</a>
                 </article>
+                <article class="project-card project-continuum-card">
+                    <div class="card-orb card-orb-continuum" aria-hidden="true"></div>
+                    <div class="card-topline">
+                        <span class="card-tag">Field Continuum</span>
+                        <span class="card-index">03</span>
+                    </div>
+                    <h3>Field Continuum</h3>
+                    <p>A custom field continuum in active development for Modern Football and the deeper simulation work behind it.</p>
+                    <ul class="card-specs" aria-label="Field Continuum highlights">
+                        <li>Field in active build</li>
+                        <li>Simulation-first</li>
+                        <li>Designed with Stygian + Scaffold</li>
+                    </ul>
+                    <a class="card-link" href="/continuum/">Open Field Continuum</a>
+                </article>
+                <article class="project-card project-qit-card">
+                    <div class="card-orb card-orb-qit" aria-hidden="true"></div>
+                    <div class="card-topline">
+                        <span class="card-tag">Version Control</span>
+                        <span class="card-index">04</span>
+                    </div>
+                    <h3>Qit</h3>
+                    <p>Quick Immutable Tree. A VCS project focused on safety, speed, compression, and better metadata handling.</p>
+                    <ul class="card-specs" aria-label="Qit highlights">
+                        <li>Immutable tree model</li>
+                        <li>C++23 implementation</li>
+                        <li>Git-adjacent problem space</li>
+                    </ul>
+                    <a class="card-link" href="/qit/">Open Qit</a>
+                </article>
                 <article class="project-card project-football-card">
                     <div class="project-wave" aria-hidden="true"></div>
                     <div class="card-orb card-orb-football" aria-hidden="true"></div>
                     <div class="card-topline">
                         <span class="card-tag">In Progress</span>
-                        <span class="card-index">02</span>
+                        <span class="card-index">05</span>
                     </div>
                     <h3>Modern Football</h3>
-                    <p>A football project built from scratch with zero loyalty to stale sports-game habits. Tactical, reactive, and meant to feel like the sport actually has a brain.</p>
+                    <p>A football game built from scratch. Tactical, reactive, and focused on decision-making that feels true to the sport.</p>
                     <ul class="card-specs" aria-label="Modern Football highlights">
                         <li>Tactical simulation</li>
                         <li>Fresh AI assumptions</li>
@@ -193,26 +246,33 @@
 
         <section class="signal-yard panel" id="signal-yard">
             <div class="section-heading">
-                <p class="section-kicker">Signal Yard</p>
-                <h2>The water moves. Nothing else has to.</h2>
+                <p class="section-kicker">Progress Blog</p>
+                <h2>Recent build updates.</h2>
             </div>
             <div class="yard-copy">
-                <p>The yard is just a moving Aero water bed now. Cleaner read, better mood, no annoying physics toy trying to become the whole page.</p>
+                <p>Posts land as work lands. The homepage stays focused while the blog carries the day-to-day details.</p>
             </div>
-            <div class="chip-field" data-chip-field>
-                <div class="water-layer" aria-hidden="true">
-                    <svg class="water-svg" viewBox="0 0 1200 420" preserveAspectRatio="none">
-                        <path class="water-wave water-wave-back" d="M0 238C85 206 170 198 250 214C332 230 402 286 486 290C573 294 650 248 730 226C815 203 905 205 988 226C1077 248 1139 292 1200 304V420H0Z"></path>
-                        <path class="water-wave water-wave-front" d="M0 262C100 226 194 218 282 236C366 254 441 312 528 318C614 324 696 282 780 258C864 234 954 232 1038 250C1111 266 1168 300 1200 318V420H0Z"></path>
-                        <path class="water-line" d="M0 238C85 206 170 198 250 214C332 230 402 286 486 290C573 294 650 248 730 226C815 203 905 205 988 226C1077 248 1139 292 1200 304"></path>
-                    </svg>
+            <div class="blog-preview-grid">
+                {featuredPosts.map((post) => (
+                    <article class="blog-preview-card">
+                        <p class="section-kicker">{post.date}</p>
+                        <h3>{post.title}</h3>
+                        <p>{post.summary}</p>
+                        <a class="card-link" href={post.href}>Read post</a>
+                    </article>
+                ))}
+                <div class="blog-preview-card blog-preview-cta">
+                    <p class="section-kicker">Need older updates?</p>
+                    <h3>Read the full progress feed.</h3>
+                    <p>The blog is our running changelog across games, tooling, research, and field work.</p>
+                    <a class="button button-secondary" href="/blog/">Go to Blog</a>
                 </div>
             </div>
         </section>
     </main>
 
     <footer class="site-footer">
-        <p>REDriver Works builds Grid, Modern Football, and whatever comes next.</p>
+        <p>We build Modern Football, Stygian, Field Continuum, Qit, and whatever comes next.</p>
     </footer>
 </div>
 

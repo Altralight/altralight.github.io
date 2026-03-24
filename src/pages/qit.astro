@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectPageShell from "../components/ProjectPageShell.astro";
+---
+
+<BaseLayout
+    title="Qit - Altralight"
+    description="Qit is our immutable-tree version control system focused on safety, speed, and compression."
+    bodyClass="project-page"
+>
+    <ProjectPageShell
+        themeClass="project-theme-qit"
+        eyebrow="Version Control"
+        title="Qit"
+        intro="Quick Immutable Tree. A version control system focused on safety, speed, and tighter storage behavior."
+        status="Core implementation is active and evolving. Positioning and integration work are ongoing as we fold Qit into the broader toolchain."
+        sideNote="Qit is not a simple rename of Git ideas. It exists because we wanted stronger safety guarantees, better compression characteristics, and richer metadata handling."
+        stats={[
+            { value: "C++23", label: "Implementation" },
+            { value: "Immutable", label: "Core model" },
+            { value: "Fast", label: "Primary goal" },
+        ]}
+        panels={[
+            {
+                kicker: "What It Is",
+                title: "Version control with a different backbone.",
+                body: [
+                    "Qit uses a Quick Immutable Tree model and its own CLI surface rather than wrapping another VCS.",
+                    "The intent is better reliability under change while still staying practical for daily engineering use."
+                ]
+            },
+            {
+                kicker: "Why We Built It",
+                title: "Safety, speed, compression, metadata.",
+                body: [
+                    "The target is a system that can be safer and faster while carrying richer metadata without exploding storage cost.",
+                    "That tradeoff space is where Qit is designed to compete."
+                ]
+            },
+            {
+                kicker: "Current Shape",
+                title: "Tooling layer with room to grow.",
+                body: [
+                    "Qit is part of the studio's long-term tooling foundation and will keep being refined alongside the other core projects.",
+                    "Progress updates land in the blog as the command surface and internal model continue to evolve."
+                ]
+            }
+        ]}
+        links={[
+            { href: "/", label: "Back to Homepage", variant: "secondary" },
+            { href: "/blog/", label: "Read progress posts" },
+        ]}
+    />
+</BaseLayout>

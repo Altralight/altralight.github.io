@@ -2,8 +2,8 @@
 import "../styles/global.css";
 
 const {
-    title = "REDriver Works",
-    description = "REDriver Works builds loud, fast, unusual software and game projects like Modern Football, Stygian, and Field Continuum.",
+    title = "Altralight",
+    description = "We build games, tools, and experiments like Modern Football, Stygian, and Field Continuum.",
     bodyClass = "",
 } = Astro.props;
 ---
@@ -17,7 +17,7 @@ const {
     <title>{title}</title>
     <script is:inline>
         (() => {
-            const storageKey = "redriver-theme";
+            const storageKey = "altralight-theme";
             const root = document.documentElement;
             let theme = "dark";
 
@@ -38,12 +38,15 @@ const {
 </head>
 <body class={bodyClass}>
     <slot />
+    <footer class="site-credit" aria-label="Site credit">
+        <p>Built with help from Codex.</p>
+    </footer>
     <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false">
         Light Mode
     </button>
     <script is:inline>
         (() => {
-            const storageKey = "redriver-theme";
+            const storageKey = "altralight-theme";
             const root = document.documentElement;
             const toggle = document.querySelector("[data-theme-toggle]");
 
